@@ -1,6 +1,9 @@
 /*
  * This file can make full use of C std lib as it will be executed outside
  * the target machine.
+ *
+ * 
+ * 
  * */
 
 #include "types.h"
@@ -11,9 +14,6 @@
 #include <stdlib.h>
 
 /*
- * is the GP & TOC set here?
- * - what kind of init is done here vs in init.S
-
 TOC (table of contents)
 - only needed in GP devices while using MMC RAW mode
 - consists of a max of 2 items
@@ -24,9 +24,6 @@ TOC (table of contents)
 offset  value
 40h     0xC0C0C0C1
 44h     0x00000100
-- where do the magic values go?
-  - A: at the 40h and 44h offsets
-
 - if the sector contains a valid CHSETTINGS item , the ROM reads the GP header
   in the NEXT 512-byte section, uses its size and destination info to download
   the image to the destination address and jumps to the destination address 
@@ -132,28 +129,6 @@ int main(int argc, char **argv) {
     printf("ERROR: failed writing to MLO\n");
     exit(1);
   }
-
-  /* TODO: write a temp file with a single string as content such as FOOBAR at
-   * the address passed in by argv[1] and attach it to the end of the resulting
-   * MLO after the GP header*/
- 
-  /* this block creates a dummy foobar file to demonstrate that copying the image
-   * file content to the end of the GP header works correctly
-  in_fptr = fopen("./foobar", "w");
-  if (in_fptr == 0) {
-    printf("ERROR: failed creating temp file");
-    exit(1);
-  }
-  
-  memset(buf, 0, BUF_SIZE);
-  memcpy(buf, "FOOBAR", 7);
-  bytes_written = fwrite(&buf, sizeof(buf[0]), 7, in_fptr);
-  if (bytes_written == 0) {
-    printf("ERROR: failed writing to temp file\n");
-    exit(1);
-  }
-  fclose(in_fptr);
-  */
 
   in_fptr = fopen(argv[1], "r");
   if (in_fptr == 0) {

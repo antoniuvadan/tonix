@@ -1,11 +1,39 @@
+MEMORY
+{
+    sram : ORIGIN = 0x402F0400, LENGTH = 0xFBFF
+}
+
 SECTIONS
 {
-  . = 0x00000000;
-  .text: { *(.text*) } /* TODO: add *.o when other object files should get linked */
-  .data : { *(.data) }
-  .bss : { *(.bss) }
+  .text: {
+    . = ALIGN(4);
+    *(.o*)
+    *(.text*) 
+  } > sram
+
+  .data : { 
+    . = ALIGN(4);
+    *(.data) 
+  } > sram
+
+  .bss : { 
+    _bss_start = .;
+    . = ALIGN(4);
+    *(.bss) 
+    _bss_end = .;
+  } > sram
+
+  .stack :
+  {
+    _stack_limit = .;
+    . = ALIGN(4);
+    *(.stack*)
+    . = . + 0x2000; /* 8KB of stack for 4 modes */
+    _stack_top = .;
+  } > internal_ram
+
   . = ALIGN(4);
 }
 
-ENTRY(__start)
+ENTRY(_start)
 

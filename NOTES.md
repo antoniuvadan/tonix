@@ -16,6 +16,7 @@
   from?
 
 ## TODO now
+- run what you have rn with qemu (realview arch)
 - to demonstrate that the loaded image is indeed running, write _start, jump
   to a C file, and show distinct pattern on LEDs to verify that init code
   is running
@@ -94,7 +95,7 @@ TOC (table of contents)
 - `xxd` creates a hexdump of a given file
 
 
-## Terminology
+## General Terminology
 Code shadowing
 - copying code from a non-directly addressable area (e.g. memory device) to
   a location where code can be executed (typically RAM)
@@ -179,6 +180,9 @@ SATA
 Sector
 - logical unit of 512 bytes (on AM335x)
 
+SPI
+- Serial Peripheral Interface
+
 SPL
 - Secondary Program Loader
 - sometimes referred to as MLO (MMC Loader)
@@ -209,4 +213,87 @@ Watchdog timer
 
 XIP
 - eXecutable In Place
+
+
+## ARM programming terminology
+APSR
+- Application Program Status Register (APSR)
+- this is an application-level alias for the CPSR
+-  31  30  29  28  27    24            20        16                           0
+  N | Z | C | V | Q | RAZ/ | Reserved,  | GE[3:0] | Reserved, UNK / SBZP      |
+                    | SBZP | UNK / SBZP |         |                           |
+source:
+https://developer.arm.com/documentation/ddi0406/c/Application-Level-Architecture/Application-Level-Programmers--Model/The-Application-Program-Status-Register--APSR-?lang=en
+
+CPSR:
+- Current Program Status Register
+- holds processor status and control information:
+  - the APSR
+  - current instruction set state
+  - execution state bits for the Thumb If-Then instruction
+  - current endianness
+  - **current processor mode**
+  - **interrupt and async abort disable bits**
+
+
+SPSRs
+- Saved Program Status Registers
+- the purpose is to record the pre-exception value of the CPSR
+- **on taking the exception, the CPSR is copied to the SPSR of the mode to
+  which the exception is taken**
+
+Format of CPSR and SPSR bit assignments:
+https://developer.arm.com/documentation/ddi0406/c/System-Level-Architecture/The-System-Level-Programmers--Model/ARM-processor-modes-and-ARM-core-registers/Program-Status-Registers--PSRs-?lang=en#CIHJBHJA
+
+
+## ARM processor modes
+For details and usage information, see source:
+https://developer.arm.com/documentation/ddi0406/c/System-Level-Architecture/The-System-Level-Programmers--Model/ARM-processor-modes-and-ARM-core-registers/ARM-processor-modes?lang=en#CIHGHDGI
+
+Processor modes   Encoding Privilege level  Implemented
+User         usr  10000    PL0              Always
+FIQ          fiq  10001    PL1              Always
+IRQ          irq  10010    PL1              Always
+Supervisor   svc  10011    PL1              Always
+Monitor      mon  10110    PL1              With security 
+                                            extensions
+Abort        abt  10111    PL1              Always
+Hyp          hyp  11010    PL2              With virtualization
+                                            extensions
+Undefined    und  11011    PL1              Always
+System       sys  11111    PL1              Always
+
+
+to change modes:
+msr cpsr_<fields>
+where <fields> is a sequence of one or more of the following
+- c
+  - mask<0> = '1' to enable writing of bits<7:0> of the destination PSR
+- x
+  - mask<1> = '1' to enable writing of bits<15:8> of the destination PSR
+- s
+  - mask<2> = '1' to enable writing of bits<23:16> of the destination PSR
+- f
+  - mask<3> = '1' to enable writing of bits<31:24> of the destination PSR.
+source: https://developer.arm.com/documentation/ddi0406/c/System-Level-Architecture/System-Instructions/Alphabetical-list-of-instructions/MSR--immediate-?lang=en
+
+important ARM assembly constants
+https://developer.arm.com/documentation/dui0056/d/writing-code-for-rom/loading-the-rom-image-at-address-0/sample-code
+
+FIQ
+- reserved for a single, high-priority interrupt source that requires a guaranteed fast response time
+
+IRQ
+- used for all other interrupts in the system
+- As FIQ is the last entry in the vector table, the FIQ handler can be placed
+  directly at the vector location and run sequentially from that address. This
+  avoids a branch instruction and any associated delay, speeding up FIQ
+  response time
+  - when I_Bit is set, IRQ is disabled
+- A further key difference between IRQ and FIQ is that the FIQ handler is not
+  expected to generate any other exceptions. FIQ is therefore reserved for
+  special system-specific devices which have all their memory mapped and no
+  need to make SVC calls to access kernel functions (so FIQ can be used only by
+  code which does not need to use the kernel API).
+  - when F_Bit is set, FRQ is disabled
 
