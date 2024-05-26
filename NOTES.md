@@ -2,16 +2,17 @@
 - is uboot required at all?
   - don't think so bc the SPL can be read from the SD card. SPL can do hw init
     and load kernel directly
-- what hw initialization is required on the first and second stages of the
-  bootloader?
+- what hw initialization is required in start.S?
+  - stack pointers init
+  - bss init
+  - other?
 - going to use UART to display the output of the OS
   - where can i display the output
   - do i need to run a program on my laptop and connect the bbb via uart to it?
   - A: use screen terminal command
   - A: qemu will display output in running shell by default
-- MMC0 vs MMC1
-- when to switch out of real mode
 - can we get JTAG over USB to single-step through the bare metal code?
+  - may not be needed if a good dev env is set up w qemu
 - is etcher needed to configure the microsd card correctly for it to be flashed
   from?
 
@@ -24,17 +25,6 @@
   is running
 
 ## bootloader
-### Implementation
-Main idea
-- SPL 
-  - initializes hw for
-  - loads ELF to 0x00000000 and jumps there
-- ELF
-  - initializes hw (?) 
-  - jumps to main
-  - process image
-
-
 ### Research
 source: https:/developer.arm.com/documentation/ka002218/latest/
 - The bootloader is usually placed at the chips flash base address
@@ -224,6 +214,7 @@ APSR
 -  31  30  29  28  27    24            20        16                           0
   N | Z | C | V | Q | RAZ/ | Reserved,  | GE[3:0] | Reserved, UNK / SBZP      |
                     | SBZP | UNK / SBZP |         |                           |
+- this view doesn't tell me anything useful about bits 0 - 27
 source:
 https://developer.arm.com/documentation/ddi0406/c/Application-Level-Architecture/Application-Level-Programmers--Model/The-Application-Program-Status-Register--APSR-?lang=en
 
@@ -236,7 +227,6 @@ CPSR:
   - current endianness
   - **current processor mode**
   - **interrupt and async abort disable bits**
-
 
 SPSRs
 - Saved Program Status Registers
