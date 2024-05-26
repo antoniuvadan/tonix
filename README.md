@@ -7,8 +7,8 @@ people, I was not involved in the development of all parts of the kernel which
 motivated me to write one from scratch myself.
 
 Below is an in-progress collection of notes about the bootloader (and soon the
-kernel) that I would find useful if I were to start over from scratch. Notes
-are based on lessons learned along the way.
+kernel) that I would find useful if I were to start over from the beginning.
+Notes are based on lessons learned along the way.
 
 ## Bootloader
 ### MLO
