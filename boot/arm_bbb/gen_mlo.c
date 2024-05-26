@@ -1,13 +1,4 @@
-/*
- * This file can make full use of C std lib as it will be executed outside
- * the target machine.
- *
- * 
- * 
- * */
-
 #include "types.h"
-#include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -31,8 +22,8 @@ offset  value
 
 TOC item fields: 26-38 in AM335x TRM
 +---------------------------------+ 00h
-|                TOC              | TODO: verify: "The second TOC item must be filled by FFh" -- am335x trm 26.1.11
-|   - Configuration Header (CH)   |
+|                TOC              | - 1st item contains data as per am335x TRM 26.1.11
+|   - Configuration Header (CH)   | - 2nd section filled by FFh
 |   - magic values                |
 +---------------------------------+ next 512 byte section @ 200h
 |             GP header           | 4 bytes for image size
@@ -149,14 +140,6 @@ int main(int argc, char **argv) {
   fseek(in_fptr, 0L, SEEK_SET);
   image = (uint8_t*)malloc(in_fptr_size);
   fread(image, 1, in_fptr_size, in_fptr);
-
-  /*
-  printf("image contents: ");
-  for (p = image; *p; p++) {
-    printf("%u ", *p);
-  }
-  printf("\n");
-  */
 
   bytes_written = fwrite(&in_fptr_size, 4, 1, out_fptr);
   if (bytes_written == 0) {
