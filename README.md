@@ -3,20 +3,17 @@ Minimal operating system kernel and bootloader.
 
 I decided to take on this project after helping write a kernel for the
 BeagleBone Black as part of a university course. Being part of a team of 7
-people, I was not involved in the development of all parts of the kernel. What
-better way to learn how everything works and fits together than writing it all
-yourself?
+people, I was not involved in the development of all parts of the kernel which
+motivated me to write one from scratch myself.
 
-Below is a collection of notes about the bootloader (and soon the kernel) that
-I would find useful if I were building this from scratch again.
+Below is an in-progress collection of notes about the bootloader (and soon the
+kernel) that I would find useful if I were to start over from scratch. Notes
+are based on lessons learned along the way.
 
 ## Bootloader
 ### MLO
-The MLO should be in a file called "MLO" in the root of the uSD filesystem
-(source:
-https://github.com/mvduin/bbb-asm-demo/?tab=readme-ov-file#booting-%CE%BCsdemmc)
-
 Layout (FOOBAR is a placeholder for the boot image):
+
 ```
 $ xxd MLO
 00000000: 4000 0000 0c00 0000 0000 0000 0000 0000  @...............

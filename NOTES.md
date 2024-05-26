@@ -15,6 +15,10 @@
   - may not be needed if a good dev env is set up w qemu
 - is etcher needed to configure the microsd card correctly for it to be flashed
   from?
+- The MLO should be in a file called "MLO" in the root of the uSD filesystem?
+  (source:
+  https://github.com/mvduin/bbb-asm-demo/?tab=readme-ov-file#booting-%CE%BCsdemmc)
+
 
 ## TODO now
 - run what you have rn with qemu (realview arch)
