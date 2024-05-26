@@ -1,8 +1,14 @@
 # TONIX
 Minimal operating system kernel and bootloader.
 
-TODO: specify what hardware the OS can boot on when bootable on realview and 
-bbb.
+I decided to take on this project after helping write a kernel for the
+BeagleBone Black as part of a university course. Being part of a team of 7
+people, I was not involved in the development of all parts of the kernel. What
+better way to learn how everything works and fits together than writing it all
+yourself?
+
+Below is a collection of notes about the bootloader (and soon the kernel) that
+I would find useful if I were building this from scratch again.
 
 ## Bootloader
 ### MLO

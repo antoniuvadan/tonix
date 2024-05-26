@@ -77,9 +77,9 @@ TOC (table of contents)
 
 ## Useful commands
 - `ojbdump` -- disassembler but it can also display various other information about object ﬁles
-  - objdump -t
+  - `objdump -t`
     - display symbol table
-  - objdump -p
+  - `objdump -p`
     - print ELF program headers
 - `nm` -- lists symbols from object ﬁles
 - `readelf` -- displays information from ELF-format object ﬁle
