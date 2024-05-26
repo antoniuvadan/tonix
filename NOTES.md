@@ -17,6 +17,8 @@
 
 ## TODO now
 - run what you have rn with qemu (realview arch)
+  - worthwhile investing in developing a parallel environment in qemu (which, 
+    according to 432 experience, is more forgiving than bare metal anyway)
 - to demonstrate that the loaded image is indeed running, write _start, jump
   to a C file, and show distinct pattern on LEDs to verify that init code
   is running

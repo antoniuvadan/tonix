@@ -21,5 +21,6 @@ _start:
                                                    ; Kernel should run in SVC mode
                                                    ; System starts in SVC on reset in ARMv7-A
     mov     sp, r0
-    bl      _main
+    /* TODO: initialize BSS */
+    bl      _main                                  ; TODO: does this work?
 

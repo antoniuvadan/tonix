@@ -1,4 +1,3 @@
 void _main(void) {
-  /* TODO: initialize bss */
-  /* can we start lighting up the LEDs here? */ 
+  /* light up LEDs to verify this code gets executed */ 
 }

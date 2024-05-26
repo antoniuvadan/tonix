@@ -1,6 +1,6 @@
 MEMORY
 {
-    sram : ORIGIN = 0x402F0400, LENGTH = 0xFBFF
+    sram : ORIGIN = 0x402F0400, LENGTH = 0xFBFF /* am335x TRM 26.1.4.2 */
 }
 
 SECTIONS
